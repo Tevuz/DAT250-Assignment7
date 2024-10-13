@@ -1,0 +1,95 @@
+### Create a new User
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "User1",
+  "email": "email1@domain"
+}
+
+> {% client.test("Create a user1", function () { client.assert(response.status === 201, "User1 was not created") }) %}
+
+
+### Create another User
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "User2",
+  "email": "email2@domain"
+}
+
+> {% client.test("Create a user2", function () { client.assert(response.status === 201, "User2 was not created") }) %}
+
+
+### List all users
+GET http://localhost:8080/api/users
+
+
+### User 1 creates a new poll
+POST http://localhost:8080/api/polls
+Content-Type: application/json
+
+{
+  "question": "Question 1",
+  "author_username": "User1",
+  "voteOptions": [
+    {
+      "caption": "A"
+    },
+    {
+      "caption": "B"
+    }
+  ]
+}
+
+> {% client.test("Create a poll", function () { client.assert(response.status === 201, "poll was not created") }) %}
+
+### List all polls
+GET http://localhost:8080/api/polls
+
+
+
+### User 2 votes on poll
+POST http://localhost:8080/api/votes
+Content-Type: application/json
+
+{
+  "username": "User2",
+  "voteOption": {
+      "id": 2
+    }
+}
+
+> {% client.test("User2 votes on poll", function () { client.assert(response.status === 201, "vote was not created") }) %}
+
+
+
+### User 2 votes on poll
+PUT http://localhost:8080/api/votes/1
+Content-Type: application/json
+
+{
+  "username": "User2",
+  "voteOption": {
+      "id": 1
+    }
+}
+
+> {% client.test("User2 votes on poll", function () { client.assert(response.status === 200, "vote was not created") }) %}
+
+
+
+### List all votes
+GET http://localhost:8080/api/votes
+
+
+### Delete the poll
+DELETE http://localhost:8080/api/polls/1
+
+> {% client.test("Poll is deleted", function () { client.assert(response.status === 204, "poll was not deleted") }) %}
+
+
+### List all votes
+GET http://localhost:8080/api/votes
+

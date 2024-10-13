@@ -1,0 +1,12 @@
+create sequence app_user_seq start with 1 increment by 50;
+create sequence poll_seq start with 1 increment by 50;
+create sequence vote_option_seq start with 1 increment by 50;
+create sequence vote_seq start with 1 increment by 50;
+create table app_user (id bigint not null, email varchar(255), username varchar(255), primary key (id));
+create table poll (author_id bigint, id bigint not null, published_at timestamp(6) with time zone, valid_until timestamp(6) with time zone, question varchar(255), primary key (id));
+create table vote (id bigint not null, published_at timestamp(6) with time zone, user_id bigint, vote_option_id bigint, primary key (id));
+create table vote_option (presentation_order integer not null, id bigint not null, poll_id bigint, caption varchar(255), primary key (id));
+alter table if exists poll add constraint FKays4ctjjq00nj9fcb0spy1juc foreign key (author_id) references app_user;
+alter table if exists vote add constraint FKe0wq53r6cxdsssvfrymxr4pe6 foreign key (user_id) references app_user;
+alter table if exists vote add constraint FKh8ws1u4yubjccgtjtpmb2f4rb foreign key (vote_option_id) references vote_option;
+alter table if exists vote_option add constraint FKc3kqmx2cig1mb3kid3gjwtx2a foreign key (poll_id) references poll;
